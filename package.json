@@ -1,0 +1,30 @@
+{
+  "name": "api-movies",
+  "version": "1.0.0",
+  "description": "API desenvolvida para estudos.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node ./src/server.js",
+    "dev": "nodemon ./src/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JMonteiroh/API-MOVIES.git"
+  },
+  "author": "João Paulo Monteiro",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JMonteiroh/API-MOVIES/issues"
+  },
+  "homepage": "https://github.com/JMonteiroh/API-MOVIES#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "express": "^4.18.2",
+    "express-async-errors": "^3.1.1",
+    "sqlite": "^4.1.2",
+    "sqlite3": "^5.1.4"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  }
+}
