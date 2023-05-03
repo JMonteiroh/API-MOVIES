@@ -10,6 +10,7 @@ const express = require('express');
 
 const routes = require("./routes");
 
+
 migrationsRun();
 
 const app = express();
