@@ -49,6 +49,8 @@ class NotesController {
 
   async index(request, response) {
     const { title, tags, rating } = request.query;
+    
+    const user_id = request.user.id;
 
     let notes;
 
@@ -69,7 +71,7 @@ class NotesController {
         .orderBy("notes.title")
     }else {
       notes = await knex('notes')
-        .where({ user_id })
+        .where({user_id})
         .whereLike("title", `%${title}%`)
         .orderBy("title")
     }
