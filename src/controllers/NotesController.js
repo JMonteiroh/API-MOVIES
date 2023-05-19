@@ -36,7 +36,7 @@ class NotesController {
 
     return response.json({
       ...note,
-      tags
+      tags,
     });
   };
 
@@ -85,6 +85,7 @@ class NotesController {
         tags: noteTags
       }
     })
+
     return response.json(notesWithTags);
   }
 
