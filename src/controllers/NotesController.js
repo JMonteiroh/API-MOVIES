@@ -1,5 +1,10 @@
 const knex = require('../database/knex');
 
+const AppError = require('../utils/AppError')
+
+const sqliteConnection = require("../database/sqlite");
+
+
 class NotesController {
   async create(request, response) {
     const { title, description, rating, tags } = request.body;
@@ -88,6 +93,42 @@ class NotesController {
 
     return response.json(notesWithTags);
   }
+
+  async update(request, response) {
+    const { title, description, rating, tags } = request.body;
+
+    const { id } = request.params;
+
+    const database = await sqliteConnection();
+
+    const note = await database.get("SELECT * FROM notes WHERE id = (?)", [id]);
+
+    
+    if(!note) {
+      throw new AppError("Nota não encontrada.")
+    }
+
+    note.title = title;
+    note.description = description;
+    note.rating = rating;
+    note.tags = tags;
+
+    
+    await database.run(`
+      UPDATE notes SET 
+      title = ?, 
+      description = ?, 
+      rating = ?,
+      updated_at = ?
+      WHERE id = ?`,
+     [note.title, note.description, note.rating, new Date(), id]
+     );
+     
+
+     return response.json();
+
+
+  };
 
 }
 
