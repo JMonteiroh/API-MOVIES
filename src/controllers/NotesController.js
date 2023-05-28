@@ -102,7 +102,7 @@ class NotesController {
     const database = await sqliteConnection();
 
     const note = await database.get("SELECT * FROM notes WHERE id = (?)", [id]);
-
+    
     
     if(!note) {
       throw new AppError("Nota não encontrada.")
@@ -111,8 +111,11 @@ class NotesController {
     note.title = title;
     note.description = description;
     note.rating = rating;
-    note.tags = tags;
 
+    await database.run('DELETE FROM tags WHERE note_id = ?', [id]);
+    for (const tag of tags) {
+     await database.run('INSERT INTO tags (note_id, name, user_id) VALUES (?, ?, ?)', [id, tag, note.user_id]);
+    }
     
     await database.run(`
       UPDATE notes SET 
@@ -123,6 +126,8 @@ class NotesController {
       WHERE id = ?`,
      [note.title, note.description, note.rating, new Date(), id]
      );
+
+   
      
 
      return response.json();

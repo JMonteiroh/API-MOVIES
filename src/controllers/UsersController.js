@@ -43,14 +43,14 @@ class UsersController {
       throw new AppError("Usuário não encontrado");
     }
 
-    const userWithUpdatedEmail = await database.get("UPDATE users SET email = (?)", [email]);
+    const userWithUpdatedEmail = await database.get("SELECT * FROM users WHERE email = (?)", [email]);
 
-    if (userWithUpdatedEmail && userWithUpdatedEmail.id === user.id) {
+    if (userWithUpdatedEmail && userWithUpdatedEmail.id !== user.id) {
       throw new AppError("Email já cadastrado");
     }
 
     user.name = name ?? user.name;
-    user.email = email?? user.email;
+    user.email = email ?? user.email;
 
     if (password && !old_password) {
       throw new AppError("Você precisa informar a senha antiga para redefinir a senha.");
@@ -74,7 +74,7 @@ class UsersController {
      [user.name, user.email, user.password, user_id]
      );
 
-     return response.json();
+     return response.json(user);
 
 
   };
